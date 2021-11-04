@@ -18,7 +18,7 @@ Cache-Control:max-age=30(30秒后过期)
 Cache-Control可以在请求头或者响应头中设置，并且结合使用多种指令
 获取不希望缓存可以设置为no-cache
 
-![avatar](./HTTP缓存/HTTP缓存1.png)
+![pic](./HTTP缓存/HTTP缓存1.png)
 
 ## 协商缓存（对比缓存）
 是一种服务端的缓存策略，可以通过设置`Last-Modified`和`ETag`实现  
@@ -35,11 +35,12 @@ Cache-Control可以在请求头或者响应头中设置，并且结合使用多�
 **两者的比较**
 `Last-Modified`只能精确到秒，如在更为精确的时间内修改了文件，就无法返回正确的资源
 如果在本地打开文件，即使没有修改，也会造成`Last-Modified`的改变，但是`ETag`可以判断文件内容是否相同
-{% asset_img HTTP缓存2.png %}
+![pic](./HTTP缓存/HTTP缓存2.png)
+
 
 大致流程图 
+![pic](./HTTP缓存/HTTP缓存.png)
 
-{% asset_img HTTP缓存.png %}
 
 
 {% link 参考 https://b23.tv/ZDG3V9 [external] [title] %}
