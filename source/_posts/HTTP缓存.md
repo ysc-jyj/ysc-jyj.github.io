@@ -37,7 +37,7 @@ Cache-Control可以在请求头或者响应头中设置，并且结合使用多�
 如果在本地打开文件，即使没有修改，也会造成`Last-Modified`的改变，但是`ETag`可以判断文件内容是否相同
 {% asset_img HTTP缓存2.png %}
 
-大致流程图
+大致流程图 
 
 {% asset_img HTTP缓存.png %}
 
