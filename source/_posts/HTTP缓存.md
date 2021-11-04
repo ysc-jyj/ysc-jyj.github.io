@@ -19,6 +19,7 @@ Cache-Control可以在请求头或者响应头中设置，并且结合使用多�
 获取不希望缓存可以设置为no-cache
 
 {% asset_img HTTP缓存1.png %}
+![avatar](HTTP缓存1.png)
 
 ## 协商缓存（对比缓存）
 是一种服务端的缓存策略，可以通过设置`Last-Modified`和`ETag`实现  
