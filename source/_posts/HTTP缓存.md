@@ -24,17 +24,21 @@ Cache-Control可以在请求头或者响应头中设置，并且结合使用多�
 是一种服务端的缓存策略，可以通过设置`Last-Modified`和`ETag`实现  
 
 **Last-Modified**
+
 表示本地文件最后修改的日期
 `If-Modified-Since`会`Last-Modified`的值发送给服务器，询问服务器资源在时间后是否更新，有就发送新的资源，无就返回304
 
 **ETag**
+
 资源对应的唯一字符串
 优先级高于`Last-Modified`
 `If-None-Match`会将`ETag`发送给服务器，询问该资源`ETag`是否变动，有变动的话就将新的资源发送回来
 
 **两者的比较**
+
 `Last-Modified`只能精确到秒，如在更为精确的时间内修改了文件，就无法返回正确的资源
 如果在本地打开文件，即使没有修改，也会造成`Last-Modified`的改变，但是`ETag`可以判断文件内容是否相同
+
 ![pic](./HTTP缓存/HTTP缓存2.png)
 
 
