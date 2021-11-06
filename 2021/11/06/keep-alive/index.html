@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="当在使用&lt;componet&gt;时可以通过is来切换不同组件但无法保存组件的状态 这里简单写了两个组件,模拟切换组件时，组件的状态无法保存 &lt;!DOCTYPE html&gt; &lt;html lang&#x3D;&quot;en&quot;&gt;     &lt;head&gt;         &lt;meta charset&#x3D;&quot;UTF-8&quot; &#x2F;&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="keep-alive">
+<meta property="og:url" content="https://ysc-jyj.github.io/2021/11/06/keep-alive/index.html">
+<meta property="og:site_name" content="Crisis&#39;s Space">
+<meta property="og:description" content="当在使用&lt;componet&gt;时可以通过is来切换不同组件但无法保存组件的状态 这里简单写了两个组件,模拟切换组件时，组件的状态无法保存 &lt;!DOCTYPE html&gt; &lt;html lang&#x3D;&quot;en&quot;&gt;     &lt;head&gt;         &lt;meta charset&#x3D;&quot;UTF-8&quot; &#x2F;&gt;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ysc-jyj.github.io/2021/11/06/keep-alive/%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E4%B8%8D%E7%BC%93%E5%AD%98.gif">
+<meta property="og:image" content="https://ysc-jyj.github.io/2021/11/06/keep-alive/keep-alive.gif">
+<meta property="article:published_time" content="2021-11-06T21:42:34.000Z">
+<meta property="article:modified_time" content="2021-11-06T13:46:19.143Z">
+<meta property="article:author" content="Crisis">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ysc-jyj.github.io/2021/11/06/keep-alive/%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E4%B8%8D%E7%BC%93%E5%AD%98.gif">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>keep-alive</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2021/11/04/%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ysc-jyj.github.io/2021/11/06/keep-alive/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&text=keep-alive"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&is_video=false&description=keep-alive"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=keep-alive&body=Check out this article: https://ysc-jyj.github.io/2021/11/06/keep-alive/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&name=keep-alive&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ysc-jyj.github.io/2021/11/06/keep-alive/&t=keep-alive"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        keep-alive
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Crisis</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-11-06T21:42:34.000Z" itemprop="datePublished">2021-11-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Vue/" rel="tag">Vue</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>当在使用<code>&lt;componet&gt;</code>时可以通过<code>is</code>来切换不同组件但无法保存组件的状态</p>
+<p>这里简单写了两个组件,模拟切换组件时，组件的状态无法保存</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;UTF-8&quot; /&gt;
+        &lt;title&gt;Document&lt;/title&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;div id=&quot;app&quot;&gt;
+            &lt;div&gt;
+                &lt;button @click=&quot;myCom()&quot;&gt;第一个组件&lt;/button&gt;
+                &lt;button @click=&quot;otherCom()&quot;&gt;第二个组件&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;component :is=&quot;comName&quot;&gt;&lt;/component&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;script src=&quot;../js/vue2.6.12.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        Vue.component(&#39;Mycom&#39;, &#123;
+            data: function () &#123;
+                return &#123;
+                    count: 0,
+                &#125;
+            &#125;,
+            template: `&lt;button @click=&#39;count++&#39;&gt;&#123;&#123;count&#125;&#125;&lt;/button&gt;`,
+        &#125;)
+        Vue.component(&#39;Othercom&#39;, &#123;
+            data: function () &#123;
+                return &#123;
+                    msg: &#39;&#39;,
+                &#125;
+            &#125;,
+            template: `&lt;div&gt;&lt;button @click=&#39;show()&#39;&gt;点击&lt;/button&gt;&#123;&#123;msg&#125;&#125;&lt;/div&gt;`,
+            methods: &#123;
+                show() &#123;
+                    this.msg = &#39;我是另一个组件&#39;
+                &#125;,
+            &#125;,
+        &#125;)
+        var app = new Vue(&#123;
+            el: &#39;#app&#39;,
+            data: &#123;
+                comName: &#39;Mycom&#39;,
+            &#125;,
+            methods: &#123;
+                myCom() &#123;
+                    this.comName = &#39;Mycom&#39;
+                &#125;,
+                otherCom() &#123;
+                    this.comName = &#39;Othercom&#39;
+                &#125;,
+            &#125;,
+        &#125;)
+    &lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+<p><img src="/2021/11/06/keep-alive/%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E4%B8%8D%E7%BC%93%E5%AD%98.gif" alt="pic"><br>由图可知，当切换组件时，原有的组件被销毁了，重新切换回来时又被创建了，所以原有的状态无法保存下来  </p>
+<p>但是通过<code>keep-alive</code>可以将组件的状态缓存下来</p>
+<pre><code class="html">    &lt;keep-alive&gt;
+        &lt;component :is=&quot;comName&quot;&gt;&lt;/component&gt;
+    &lt;/keep-alive&gt;
+</code></pre>
+<p><img src="/2021/11/06/keep-alive/keep-alive.gif" alt="pic">  </p>
+<p>通过图可发现被切换掉的组件后面会有一个<code>inactive</code>的标志，表示失活<br>当该标签的内的组件被切换，<code>activated</code>和<code>deactivated</code>两个生命周期函数会被执行<br>当组件<strong>被缓存</strong>时会触发<code>deactivated</code>，当<strong>被激活</strong>会触发<code>activated</code>  </p>
+<p>此外，<code>&lt;keep-alive&gt;</code>是一个抽象组件：它自身不会渲染一个 DOM 元素，也不会出现在组件的父组件链中。  </p>
+<p>它涉及三个属性分别是<code>include</code>、<code>exclude</code>和<code>max</code></p>
+<p><code>include</code>和<code>exclude</code>表示有条件的缓存，条件可以用字符串或者正则表示，可以用逗号进行分隔</p>
+<ul>
+<li><code>include</code>表示只有名字匹配的才会被缓存</li>
+<li><code>exclude</code>表示名字匹配的组件都不会被缓存  <pre><code class="html">  &lt;!--通过逗号分隔--&gt;
+  &lt;keep-alive include=&#39;Mycom,Othercom&#39;&gt;
+      &lt;component :is=&quot;comName&quot;&gt;&lt;/component&gt;
+  &lt;/keep-alive&gt;
+</code></pre>
+<code>max</code>表示可以被缓存的数量，一般用数字表示</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/api/#keep-alive">参考链接</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ysc-jyj.github.io/2021/11/06/keep-alive/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&text=keep-alive"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&is_video=false&description=keep-alive"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=keep-alive&body=Check out this article: https://ysc-jyj.github.io/2021/11/06/keep-alive/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&title=keep-alive"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ysc-jyj.github.io/2021/11/06/keep-alive/&name=keep-alive&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ysc-jyj.github.io/2021/11/06/keep-alive/&t=keep-alive"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2021
+    Crisis
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
